@@ -6,8 +6,11 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.ComponentScan
 
 @ComponentScan(basePackages = [
-	"com.training.demo.controllers"
+	"com.training.demo.controllers",
+	"com.training.demo.config"
 ])
+@ConfigurationPropertiesScan(
+	basePackages = ["com.training.demo.config"])
 @SpringBootApplication
 class DemoApplication
 
