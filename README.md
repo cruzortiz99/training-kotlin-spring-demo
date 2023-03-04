@@ -18,3 +18,4 @@
 - Persistent Data: Models and Repositories
 - Services: Services Layer
 - Utils: Utils Layers, extensions
+- Error Handling: Centralize error handling
