@@ -87,6 +87,7 @@ class IntroKotlin {
         //            }
         fun whenStatementCallWithFixedStates(state: State): String {
             return when (state) {
+                // More than one value for case
                 State.FIRST, State.THIRD -> "otherFunctionCall"
                 State.SECOND -> "secondFunctionCall"
                 else -> "defaultFunctionCall"
@@ -94,6 +95,7 @@ class IntroKotlin {
         }
         fun whenStatementCallWithUnfixedStates(state: Int): String {
             return when {
+                // Logical definition for cases
                 state > 2 -> "otherFunctionCall"
                 state % 2 == 0 -> "secondFunctionCall"
                 else -> "defaultFunctionCall"
