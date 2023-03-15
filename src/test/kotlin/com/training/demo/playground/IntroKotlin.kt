@@ -2,6 +2,7 @@ package com.training.demo.playground
 
 import org.junit.jupiter.api.Test
 
+// Functional
 enum class State {
     FIRST, SECOND, THIRD, FOURTH
 }
@@ -11,6 +12,124 @@ fun add(num1: Int, num2: Int): Int {
 }
 
 var subtract = { num1: Double, num2: Double -> num1 - num2 }
+
+// OOP
+
+/** Java:
+ * public class Animal {
+ *   public final String name;
+ *   public Integer age
+ *   public Animal(String name) {
+ *     this.name = name;
+ *   }
+ *   public Animal (String name, Integer age) {
+ *      this.name = name;
+ *      this.age = age;
+ *   }
+ * }
+ *
+ * public class Dog extends Animal {
+ *   public Dog(String name, Integer age) {
+ *     super(name, age);
+ *   }
+ * */
+open class Animal(val name: String, var age: Int) {
+    constructor(name: String) : this(name, 1)
+
+    open fun walk(): Unit {
+        println("I'm walking")
+    }
+}
+
+class Dog(name: String, age: Int) : Animal(name, age)
+
+class Cat : Animal {
+    constructor(name: String, age: Int) : super(name, age)
+    constructor(name: String) : super(name)
+}
+
+class Bird(name: String) : Animal(name) {
+    init {
+        this.age = 1
+    }
+
+    override fun walk(): Unit {
+        super.walk()
+        println("I also can fly")
+    }
+}
+
+/**
+ * class Square {
+ *   private Integer _side;
+ *   public Square(Integer side) {
+ *     this.side = side;
+ *   }
+ *   public Integer getSide() {
+ *     return this._side;
+ *   }
+ *   public void setSide(Integer value) {
+ *      this._side = value;
+ *   }
+ *   public Integer getArea() {
+ *      return this.side * this.side;
+ *   }
+ * }
+ *
+ * var sq = new Square(2); -> side == 2 ; sq.getArea() == 4
+ * sq.side = 3; -> side == 3; sq.getArea() == 9 / sq.area() -> sq.area
+ *
+ * setter works with assign operator "=" / field -> ref of property
+ *
+ * */
+class Square {
+    var side: Int = 0
+        private set
+    val area: Int
+        get() {
+            return this.side * this.side
+        }
+
+    constructor(side: Int) {
+        this.side = side
+    }
+}
+// Generic class and Generic function
+// List<T> | T -> Object, List<String>.get() -> String
+// List<Integer>.set(value: Integer)
+// Java -5
+// ListObject | List.get() -> Object.cast(String)
+//
+// -- [ ] --
+
+class Container<T>(val value: T) {
+    fun getOrThrow(ex: Exception): T {
+        if (this.value != null) {
+            return this.value
+        }
+        throw ex
+    }
+
+    fun isNull(): Boolean {
+        return this.value == null
+    }
+
+    fun ifNull(action: () -> Unit): Container<T> {
+        if (this.isNull()) {
+            action()
+            return this
+        }
+        return this
+    }
+
+    fun ifNotNull(action: (T) -> Unit): Container<T> {
+        if (this.isNull()) return this
+        action(this.value)
+        return this
+    }
+}
+
+fun <T : Number> printSaldo(saldo: T) = println("su saldo: $saldo")
 
 class IntroKotlin {
     @Test
@@ -178,5 +297,34 @@ class IntroKotlin {
         assert(add20(15) == 35)
         assert(add30(15) == 45)
         assert(hz == 54)
+    }
+
+    @Test
+    fun oopClasses01() {
+        // var dog = new Dog("name", 2)
+        val dog = Dog("tommy", 3)
+        dog.walk()
+        assert(dog.name === "tommy" && dog.age === 3)
+        val cat = Cat("garfield", 2)
+        cat.walk()
+        assert(cat.name === "garfield" && cat.age === 2)
+        val bird = Bird("piolin")
+        bird.walk()
+        assert(bird.name === "piolin" && bird.age === 1)
+
+        val sq = Square(3)
+        // sq.side = 4 -> private setter compile error
+        assert(sq.side === 3)
+
+    }
+
+    @Test
+    fun oopClasses02() {
+        val value = Container("34.56")
+            .ifNull { println("soy nulo") }
+            .ifNotNull { println("no soy nulo, mi valor es $it") }
+            .value
+        assert(value !== null)
+        printSaldo(123.1231)
     }
 }
